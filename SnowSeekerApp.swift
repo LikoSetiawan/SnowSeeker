@@ -11,9 +11,9 @@ import SwiftUI
 struct SnowSeekerApp: App {
     var body: some Scene {
         WindowGroup {
-//            ContentView()
+            ContentView()
 //            groupView()
-            SharingEnvironment()
+//            SharingEnvironment()
         }
     }
 }

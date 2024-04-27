@@ -9,18 +9,38 @@ import SwiftUI
 
 
 struct ContentView: View {
-   
+    let resorts: [Resort] = Bundle.main.decode("resorts.json")
     
     var body: some View {
-        Button("tap me ") {
-            selectedUser = User()
-            isShowingUser = true
-        }
-        .sheet(item: $selectedUser) { user in
-            Text(user.id)
-        }
-        .alert("welcome", isPresented: $isShowingUser, presenting: selectedUser) { user in
-            Button(user.id) { }
+        NavigationSplitView {
+            List(resorts) { resort in
+                NavigationLink(value: resort) {
+                    HStack {
+                        Image(resort.country)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 40, height: 25)
+                            .clipShape(.rect(cornerRadius: 5))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(.black, lineWidth: 1)
+                            )
+                        
+                        VStack(alignment: .leading) {
+                            Text(resort.name)
+                                .font(.headline)
+                            Text("\(resort.runs) runs")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+            }
+            .navigationDestination(for: Resort.self) { resort in
+                ResortView(resort: resort)
+            }
+            .navigationTitle("Resort")
+        } detail: {
+            WelcomeView()
         }
     }
 }
