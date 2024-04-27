@@ -10,10 +10,19 @@ import SwiftUI
 
 struct ContentView: View {
     let resorts: [Resort] = Bundle.main.decode("resorts.json")
+    @State private var searchText = ""
+    
+    var filteredResort: [Resort] {
+        if searchText.isEmpty {
+            resorts
+        } else {
+            resorts.filter { $0.name.localizedStandardContains(searchText)}
+        }
+    }
     
     var body: some View {
         NavigationSplitView {
-            List(resorts) { resort in
+            List(filteredResort) { resort in
                 NavigationLink(value: resort) {
                     HStack {
                         Image(resort.country)
@@ -35,10 +44,12 @@ struct ContentView: View {
                     }
                 }
             }
+            .navigationTitle("Resort")
             .navigationDestination(for: Resort.self) { resort in
                 ResortView(resort: resort)
             }
-            .navigationTitle("Resort")
+            .searchable(text: $searchText, prompt: "Search for a place")
+            
         } detail: {
             WelcomeView()
         }
