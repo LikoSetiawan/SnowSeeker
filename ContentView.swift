@@ -7,18 +7,24 @@
 
 import SwiftUI
 
+
 struct ContentView: View {
+   
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Button("tap me ") {
+            selectedUser = User()
+            isShowingUser = true
         }
-        .padding()
+        .sheet(item: $selectedUser) { user in
+            Text(user.id)
+        }
+        .alert("welcome", isPresented: $isShowingUser, presenting: selectedUser) { user in
+            Button(user.id) { }
+        }
     }
 }
-
-#Preview {
-    ContentView()
-}
+    
+    #Preview {
+        ContentView()
+    }
